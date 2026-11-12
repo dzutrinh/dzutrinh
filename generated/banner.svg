@@ -1,0 +1,250 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="381" viewBox="0 0 800 381" role="img" aria-label="dzutrinh. Data Mining Researcher: high-utility itemset and pattern mining. Retro Games | Text-Mode and Terminal UIs | DOS. Pascal | C | Swift | x86 Assembly. Color quantization, dithering, ray casting, a NES emulator in Pascal. Small macOS utilities in Swift.">
+<style>
+text { font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', 'DejaVu Sans Mono', monospace; font-size: 14px; fill: #f0efec; }
+.screen { fill: #1a1a19; stroke: #383835; }
+.bar { fill: #26262a; }
+.dim { fill: #8a897f; }
+.sec { fill: #c3c2b7; }
+.b { font-weight: 700; }
+.other { fill: #6f6e68; }
+.h0 { fill: #6eaaf2; } .h1 { fill: #f28c5e; } .h2 { fill: #3fd09c; } .h3 { fill: #eab63e; } .h4 { fill: #ef86ae; } .h5 { fill: #58c458; } .h6 { fill: #ada3f3; } .h7 { fill: #f28585; }
+.s0 { fill: #3987e5; } .s1 { fill: #d95926; } .s2 { fill: #199e70; } .s3 { fill: #c98500; } .s4 { fill: #d55181; } .s5 { fill: #008300; } .s6 { fill: #9085e9; } .s7 { fill: #e66767; }
+.t { animation: on .01s linear backwards; }
+.fade { animation: on .5s ease-out backwards; }
+@keyframes on { from { opacity: 0; } }
+@keyframes off { to { opacity: 0; } }
+.cur { fill: #f0efec; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.star { animation: twinkle 3.2s ease-in-out infinite; }
+@keyframes twinkle { 0%, 100% { opacity: .12; } 50% { opacity: .95; } }
+.logo g { animation: hue 8s linear infinite; }
+.logo text { fill: inherit; }
+@keyframes hue { 0% { fill: #6eaaf2; } 12.5% { fill: #f28c5e; } 25% { fill: #3fd09c; } 37.5% { fill: #eab63e; } 50% { fill: #ef86ae; } 62.5% { fill: #58c458; } 75% { fill: #ada3f3; } 87.5% { fill: #f28585; } 100% { fill: #6eaaf2; } }
+@media (prefers-reduced-motion: reduce) {
+* { animation: none !important; }
+.typing { display: none; }
+}
+@keyframes type { to { transform: translateX(50.4px); } }
+@keyframes tape { to { transform: translateX(-1730.4px); } }
+</style>
+<defs><clipPath id="window"><rect x="0.5" y="0.5" width="799" height="380" rx="9"/></clipPath><clipPath id="inside"><rect x="22" y="30" width="756" height="351"/></clipPath><pattern id="scan" width="4" height="3" patternUnits="userSpaceOnUse"><rect width="4" height="1" fill="#000" opacity=".16"/></pattern><filter id="glow" x="-5%" y="-40%" width="110%" height="180%"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<rect class="screen" x="0.5" y="0.5" width="799" height="380" rx="9"/>
+<g clip-path="url(#window)"><rect class="bar" width="800" height="30"/></g>
+<circle cx="20" cy="15.0" r="5.5" fill="#e66767"/><circle cx="38" cy="15.0" r="5.5" fill="#c98500"/><circle cx="56" cy="15.0" r="5.5" fill="#199e70"/>
+<text class="dim" x="400.0" y="20.0" text-anchor="middle">dzutrinh : README.EXE</text>
+<g class="logo" filter="url(#glow)">
+<g style="animation-delay: 0s"><text x="30.4" y="77" class="" textLength="67.2">########</text>
+<text x="30.4" y="93" class="" textLength="16.8">##</text><text x="97.6" y="93" class="" textLength="16.8">##</text>
+<text x="30.4" y="109" class="" textLength="16.8">##</text><text x="97.6" y="109" class="" textLength="16.8">##</text>
+<text x="30.4" y="125" class="" textLength="16.8">##</text><text x="97.6" y="125" class="" textLength="16.8">##</text>
+<text x="30.4" y="141" class="" textLength="16.8">##</text><text x="97.6" y="141" class="" textLength="16.8">##</text>
+<text x="30.4" y="157" class="" textLength="16.8">##</text><text x="97.6" y="157" class="" textLength="16.8">##</text>
+<text x="30.4" y="173" class="" textLength="67.2">########</text>
+</g>
+<g style="animation-delay: -1s"><text x="122.8" y="77" class="" textLength="84.0">##########</text>
+<text x="190.0" y="93" class="" textLength="16.8">##</text>
+<text x="173.2" y="109" class="" textLength="16.8">##</text>
+<text x="156.4" y="125" class="" textLength="16.8">##</text>
+<text x="139.6" y="141" class="" textLength="16.8">##</text>
+<text x="122.8" y="157" class="" textLength="16.8">##</text>
+<text x="122.8" y="173" class="" textLength="84.0">##########</text>
+</g>
+<g style="animation-delay: -2s"><text x="215.2" y="77" class="" textLength="16.8">##</text><text x="282.4" y="77" class="" textLength="16.8">##</text>
+<text x="215.2" y="93" class="" textLength="16.8">##</text><text x="282.4" y="93" class="" textLength="16.8">##</text>
+<text x="215.2" y="109" class="" textLength="16.8">##</text><text x="282.4" y="109" class="" textLength="16.8">##</text>
+<text x="215.2" y="125" class="" textLength="16.8">##</text><text x="282.4" y="125" class="" textLength="16.8">##</text>
+<text x="215.2" y="141" class="" textLength="16.8">##</text><text x="282.4" y="141" class="" textLength="16.8">##</text>
+<text x="215.2" y="157" class="" textLength="16.8">##</text><text x="282.4" y="157" class="" textLength="16.8">##</text>
+<text x="232.0" y="173" class="" textLength="50.4">######</text>
+</g>
+<g style="animation-delay: -3s"><text x="307.6" y="77" class="" textLength="84.0">##########</text>
+<text x="341.2" y="93" class="" textLength="16.8">##</text>
+<text x="341.2" y="109" class="" textLength="16.8">##</text>
+<text x="341.2" y="125" class="" textLength="16.8">##</text>
+<text x="341.2" y="141" class="" textLength="16.8">##</text>
+<text x="341.2" y="157" class="" textLength="16.8">##</text>
+<text x="341.2" y="173" class="" textLength="16.8">##</text>
+</g>
+<g style="animation-delay: -4s"><text x="400.0" y="77" class="" textLength="67.2">########</text>
+<text x="400.0" y="93" class="" textLength="16.8">##</text><text x="467.2" y="93" class="" textLength="16.8">##</text>
+<text x="400.0" y="109" class="" textLength="16.8">##</text><text x="467.2" y="109" class="" textLength="16.8">##</text>
+<text x="400.0" y="125" class="" textLength="67.2">########</text>
+<text x="400.0" y="141" class="" textLength="16.8">##</text><text x="433.6" y="141" class="" textLength="16.8">##</text>
+<text x="400.0" y="157" class="" textLength="16.8">##</text><text x="450.4" y="157" class="" textLength="16.8">##</text>
+<text x="400.0" y="173" class="" textLength="16.8">##</text><text x="467.2" y="173" class="" textLength="16.8">##</text>
+</g>
+<g style="animation-delay: -5s"><text x="492.4" y="77" class="" textLength="84.0">##########</text>
+<text x="526.0" y="93" class="" textLength="16.8">##</text>
+<text x="526.0" y="109" class="" textLength="16.8">##</text>
+<text x="526.0" y="125" class="" textLength="16.8">##</text>
+<text x="526.0" y="141" class="" textLength="16.8">##</text>
+<text x="526.0" y="157" class="" textLength="16.8">##</text>
+<text x="492.4" y="173" class="" textLength="84.0">##########</text>
+</g>
+<g style="animation-delay: -6s"><text x="584.8" y="77" class="" textLength="16.8">##</text><text x="652.0" y="77" class="" textLength="16.8">##</text>
+<text x="584.8" y="93" class="" textLength="33.6">####</text><text x="652.0" y="93" class="" textLength="16.8">##</text>
+<text x="584.8" y="109" class="" textLength="16.8">##</text><text x="618.4" y="109" class="" textLength="16.8">##</text><text x="652.0" y="109" class="" textLength="16.8">##</text>
+<text x="584.8" y="125" class="" textLength="16.8">##</text><text x="635.2" y="125" class="" textLength="33.6">####</text>
+<text x="584.8" y="141" class="" textLength="16.8">##</text><text x="652.0" y="141" class="" textLength="16.8">##</text>
+<text x="584.8" y="157" class="" textLength="16.8">##</text><text x="652.0" y="157" class="" textLength="16.8">##</text>
+<text x="584.8" y="173" class="" textLength="16.8">##</text><text x="652.0" y="173" class="" textLength="16.8">##</text>
+</g>
+<g style="animation-delay: -7s"><text x="677.2" y="77" class="" textLength="16.8">##</text><text x="744.4" y="77" class="" textLength="16.8">##</text>
+<text x="677.2" y="93" class="" textLength="16.8">##</text><text x="744.4" y="93" class="" textLength="16.8">##</text>
+<text x="677.2" y="109" class="" textLength="16.8">##</text><text x="744.4" y="109" class="" textLength="16.8">##</text>
+<text x="677.2" y="125" class="" textLength="84.0">##########</text>
+<text x="677.2" y="141" class="" textLength="16.8">##</text><text x="744.4" y="141" class="" textLength="16.8">##</text>
+<text x="677.2" y="157" class="" textLength="16.8">##</text><text x="744.4" y="157" class="" textLength="16.8">##</text>
+<text x="677.2" y="173" class="" textLength="16.8">##</text><text x="744.4" y="173" class="" textLength="16.8">##</text>
+</g>
+</g>
+<text class="star h4" x="299.2" y="58" style="animation-delay: -2.75s">.</text>
+<text class="star h3" x="425.2" y="58" style="animation-delay: -2.70s">.</text>
+<text class="star h6" x="181.6" y="191" style="animation-delay: -0.01s">'</text>
+<text class="star h3" x="601.6" y="191" style="animation-delay: -0.75s">.</text>
+<text class="star h0" x="677.2" y="58" style="animation-delay: -1.89s">*</text>
+<text class="star h6" x="710.8" y="58" style="animation-delay: -0.51s">.</text>
+<text class="star h0" x="542.8" y="58" style="animation-delay: -2.55s">.</text>
+<text class="star h4" x="64.0" y="58" style="animation-delay: -3.15s">*</text>
+<text class="star h3" x="47.2" y="58" style="animation-delay: -0.42s">.</text>
+<text class="star h6" x="635.2" y="191" style="animation-delay: -1.89s">+</text>
+<text class="star h0" x="391.6" y="58" style="animation-delay: -1.15s">+</text>
+<text class="star h6" x="198.4" y="191" style="animation-delay: -2.53s">.</text>
+<text class="star h4" x="106.0" y="191" style="animation-delay: -0.98s">*</text>
+<text class="star h6" x="450.4" y="58" style="animation-delay: -2.27s">+</text>
+<text class="star h6" x="769.6" y="58" style="animation-delay: -2.47s">.</text>
+<text class="star h3" x="349.6" y="58" style="animation-delay: -2.56s">+</text>
+<text class="star h3" x="710.8" y="191" style="animation-delay: -2.26s">.</text>
+<text class="star h4" x="652.0" y="191" style="animation-delay: -0.01s">.</text>
+<text class="star h6" x="223.6" y="58" style="animation-delay: -0.87s">'</text>
+<text class="star h4" x="610.0" y="58" style="animation-delay: -1.11s">.</text>
+<text class="star h3" x="282.4" y="58" style="animation-delay: -2.52s">+</text>
+<text class="star h0" x="677.2" y="191" style="animation-delay: -2.36s">.</text>
+<text class="star h6" x="467.2" y="191" style="animation-delay: -1.86s">+</text>
+<text class="star h0" x="408.4" y="58" style="animation-delay: -0.17s">*</text>
+<text class="star h4" x="576.4" y="58" style="animation-delay: -0.32s">*</text>
+<text class="star h0" x="64.0" y="191" style="animation-delay: -2.02s">+</text>
+<text class="star h6" x="542.8" y="191" style="animation-delay: -3.13s">+</text>
+<text class="star h3" x="635.2" y="58" style="animation-delay: -0.44s">.</text>
+<text class="star h0" x="358.0" y="191" style="animation-delay: -0.52s">.</text>
+<text class="star h0" x="164.8" y="191" style="animation-delay: -0.97s">+</text>
+<text class="star h0" x="475.6" y="58" style="animation-delay: -2.63s">.</text>
+<text x="22.0" y="210" class="h2 b" textLength="33.6">C:\&gt;</text>
+<text x="64.0" y="210" class="t" style="animation-delay: 0.90s">w</text>
+<text x="72.4" y="210" class="t" style="animation-delay: 1.01s">h</text>
+<text x="80.8" y="210" class="t" style="animation-delay: 1.12s">o</text>
+<text x="89.2" y="210" class="t" style="animation-delay: 1.23s">a</text>
+<text x="97.6" y="210" class="t" style="animation-delay: 1.34s">m</text>
+<text x="106.0" y="210" class="t" style="animation-delay: 1.45s">i</text>
+<g class="typing" style="animation: off .01s linear 2.01s forwards"><g style="animation: type 0.66s steps(6) 0.90s forwards"><rect class="cur" x="64.0" y="197" width="7.4" height="16"/></g></g>
+<text x="38.8" y="229" class="t b h1" textLength="84.0" style="animation-delay: 2.11s">[research]</text>
+<text x="139.6" y="229" class="t" textLength="33.6" style="animation-delay: 2.16s">Data</text>
+<text x="181.6" y="229" class="t" textLength="50.4" style="animation-delay: 2.20s">Mining</text>
+<text x="240.4" y="229" class="t" textLength="92.4" style="animation-delay: 2.23s">Researcher:</text>
+<text x="341.2" y="229" class="t" textLength="100.8" style="animation-delay: 2.27s">high-utility</text>
+<text x="450.4" y="229" class="t" textLength="58.8" style="animation-delay: 2.30s">itemset</text>
+<text x="517.6" y="229" class="t" textLength="25.2" style="animation-delay: 2.34s">and</text>
+<text x="551.2" y="229" class="t" textLength="58.8" style="animation-delay: 2.37s">pattern</text>
+<text x="618.4" y="229" class="t" textLength="50.4" style="animation-delay: 2.41s">mining</text>
+<text x="38.8" y="248" class="t b h4" textLength="50.4" style="animation-delay: 2.54s">[play]</text>
+<text x="139.6" y="248" class="t" textLength="42.0" style="animation-delay: 2.59s">Retro</text>
+<text x="190.0" y="248" class="t" textLength="42.0" style="animation-delay: 2.63s">Games</text>
+<text x="240.4" y="248" class="t dim" style="animation-delay: 2.66s">|</text>
+<text x="257.2" y="248" class="t" textLength="75.6" style="animation-delay: 2.70s">Text-Mode</text>
+<text x="341.2" y="248" class="t" textLength="25.2" style="animation-delay: 2.73s">and</text>
+<text x="374.8" y="248" class="t" textLength="67.2" style="animation-delay: 2.77s">Terminal</text>
+<text x="450.4" y="248" class="t" textLength="25.2" style="animation-delay: 2.80s">UIs</text>
+<text x="484.0" y="248" class="t dim" style="animation-delay: 2.84s">|</text>
+<text x="500.8" y="248" class="t" textLength="25.2" style="animation-delay: 2.87s">DOS</text>
+<text x="38.8" y="267" class="t b h7" textLength="50.4" style="animation-delay: 3.01s">[code]</text>
+<text x="139.6" y="267" class="t" textLength="50.4" style="animation-delay: 3.06s">Pascal</text>
+<text x="198.4" y="267" class="t dim" style="animation-delay: 3.09s">|</text>
+<text x="215.2" y="267" class="t" style="animation-delay: 3.13s">C</text>
+<text x="232.0" y="267" class="t dim" style="animation-delay: 3.16s">|</text>
+<text x="248.8" y="267" class="t" textLength="42.0" style="animation-delay: 3.20s">Swift</text>
+<text x="299.2" y="267" class="t dim" style="animation-delay: 3.23s">|</text>
+<text x="316.0" y="267" class="t" textLength="25.2" style="animation-delay: 3.27s">x86</text>
+<text x="349.6" y="267" class="t" textLength="67.2" style="animation-delay: 3.30s">Assembly</text>
+<text x="38.8" y="286" class="t b h2" textLength="67.2" style="animation-delay: 3.44s">[pixels]</text>
+<text x="139.6" y="286" class="t" textLength="42.0" style="animation-delay: 3.49s">Color</text>
+<text x="190.0" y="286" class="t" textLength="109.2" style="animation-delay: 3.52s">quantization,</text>
+<text x="307.6" y="286" class="t" textLength="84.0" style="animation-delay: 3.56s">dithering,</text>
+<text x="400.0" y="286" class="t" textLength="25.2" style="animation-delay: 3.59s">ray</text>
+<text x="433.6" y="286" class="t" textLength="67.2" style="animation-delay: 3.63s">casting,</text>
+<text x="509.2" y="286" class="t" style="animation-delay: 3.66s">a</text>
+<text x="526.0" y="286" class="t" textLength="25.2" style="animation-delay: 3.70s">NES</text>
+<text x="559.6" y="286" class="t" textLength="67.2" style="animation-delay: 3.73s">emulator</text>
+<text x="635.2" y="286" class="t" textLength="16.8" style="animation-delay: 3.77s">in</text>
+<text x="660.4" y="286" class="t" textLength="50.4" style="animation-delay: 3.80s">Pascal</text>
+<text x="38.8" y="305" class="t b h5" textLength="42.0" style="animation-delay: 3.94s">[mac]</text>
+<text x="139.6" y="305" class="t" textLength="42.0" style="animation-delay: 3.99s">Small</text>
+<text x="190.0" y="305" class="t" textLength="42.0" style="animation-delay: 4.02s">macOS</text>
+<text x="240.4" y="305" class="t" textLength="75.6" style="animation-delay: 4.06s">utilities</text>
+<text x="324.4" y="305" class="t" textLength="16.8" style="animation-delay: 4.09s">in</text>
+<text x="349.6" y="305" class="t" textLength="42.0" style="animation-delay: 4.13s">Swift</text>
+<g class="t" style="animation-delay: 4.46s"><text x="22.0" y="324" class="h2 b" textLength="33.6">C:\&gt;</text>
+<rect class="cur" x="64.0" y="311" width="7.4" height="16"/></g>
+<g clip-path="url(#inside)"><g style="animation: tape 64s linear infinite">
+<text x="22.0" y="362" class="sec" textLength="33.6">2048</text>
+<text x="64.0" y="362" class="h3 b" textLength="25.2">*22</text>
+<text x="97.6" y="362" class="dim" textLength="25.2">+++</text>
+<text x="131.2" y="362" class="sec" textLength="42.0">TMGDL</text>
+<text x="181.6" y="362" class="h3 b" textLength="25.2">*17</text>
+<text x="215.2" y="362" class="dim" textLength="25.2">+++</text>
+<text x="248.8" y="362" class="sec" textLength="126.0">Color-Reduction</text>
+<text x="383.2" y="362" class="h3 b" textLength="25.2">*12</text>
+<text x="416.8" y="362" class="dim" textLength="25.2">+++</text>
+<text x="450.4" y="362" class="sec" textLength="252.0">Plutonium-Caverns-Pascal-Port-</text>
+<text x="710.8" y="362" class="h3 b" textLength="16.8">*4</text>
+<text x="736.0" y="362" class="dim" textLength="25.2">+++</text>
+<text x="769.6" y="362" class="sec" textLength="67.2">Sort-CLI</text>
+<text x="845.2" y="362" class="h3 b" textLength="16.8">*4</text>
+<text x="870.4" y="362" class="dim" textLength="25.2">+++</text>
+<text x="904.0" y="362" class="sec" textLength="84.0">TP-RayCast</text>
+<text x="996.4" y="362" class="h3 b" textLength="16.8">*3</text>
+<text x="1021.6" y="362" class="dim" textLength="25.2">+++</text>
+<text x="1055.2" y="362" class="sec" textLength="84.0">AgentUsage</text>
+<text x="1147.6" y="362" class="h3 b" textLength="16.8">*1</text>
+<text x="1172.8" y="362" class="dim" textLength="25.2">+++</text>
+<text x="1206.4" y="362" class="sec" textLength="184.8">Bayer-Matrix-Generator</text>
+<text x="1399.6" y="362" class="h3 b" textLength="16.8">*1</text>
+<text x="1424.8" y="362" class="dim" textLength="25.2">+++</text>
+<text x="1458.4" y="362" class="sec" textLength="84.0">Calculator</text>
+<text x="1550.8" y="362" class="h3 b" textLength="16.8">*1</text>
+<text x="1576.0" y="362" class="dim" textLength="25.2">+++</text>
+<text x="1609.6" y="362" class="sec" textLength="75.6">CLI-Snake</text>
+<text x="1693.6" y="362" class="h3 b" textLength="16.8">*1</text>
+<text x="1718.8" y="362" class="dim" textLength="25.2">+++</text>
+<text x="1752.4" y="362" class="sec" textLength="33.6">2048</text>
+<text x="1794.4" y="362" class="h3 b" textLength="25.2">*22</text>
+<text x="1828.0" y="362" class="dim" textLength="25.2">+++</text>
+<text x="1861.6" y="362" class="sec" textLength="42.0">TMGDL</text>
+<text x="1912.0" y="362" class="h3 b" textLength="25.2">*17</text>
+<text x="1945.6" y="362" class="dim" textLength="25.2">+++</text>
+<text x="1979.2" y="362" class="sec" textLength="126.0">Color-Reduction</text>
+<text x="2113.6" y="362" class="h3 b" textLength="25.2">*12</text>
+<text x="2147.2" y="362" class="dim" textLength="25.2">+++</text>
+<text x="2180.8" y="362" class="sec" textLength="252.0">Plutonium-Caverns-Pascal-Port-</text>
+<text x="2441.2" y="362" class="h3 b" textLength="16.8">*4</text>
+<text x="2466.4" y="362" class="dim" textLength="25.2">+++</text>
+<text x="2500.0" y="362" class="sec" textLength="67.2">Sort-CLI</text>
+<text x="2575.6" y="362" class="h3 b" textLength="16.8">*4</text>
+<text x="2600.8" y="362" class="dim" textLength="25.2">+++</text>
+<text x="2634.4" y="362" class="sec" textLength="84.0">TP-RayCast</text>
+<text x="2726.8" y="362" class="h3 b" textLength="16.8">*3</text>
+<text x="2752.0" y="362" class="dim" textLength="25.2">+++</text>
+<text x="2785.6" y="362" class="sec" textLength="84.0">AgentUsage</text>
+<text x="2878.0" y="362" class="h3 b" textLength="16.8">*1</text>
+<text x="2903.2" y="362" class="dim" textLength="25.2">+++</text>
+<text x="2936.8" y="362" class="sec" textLength="184.8">Bayer-Matrix-Generator</text>
+<text x="3130.0" y="362" class="h3 b" textLength="16.8">*1</text>
+<text x="3155.2" y="362" class="dim" textLength="25.2">+++</text>
+<text x="3188.8" y="362" class="sec" textLength="84.0">Calculator</text>
+<text x="3281.2" y="362" class="h3 b" textLength="16.8">*1</text>
+<text x="3306.4" y="362" class="dim" textLength="25.2">+++</text>
+<text x="3340.0" y="362" class="sec" textLength="75.6">CLI-Snake</text>
+<text x="3424.0" y="362" class="h3 b" textLength="16.8">*1</text>
+<text x="3449.2" y="362" class="dim" textLength="25.2">+++</text>
+</g></g>
+<rect x="0" y="30" width="800" height="351" fill="url(#scan)" clip-path="url(#window)"/>
+</svg>

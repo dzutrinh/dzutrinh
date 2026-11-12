@@ -1,12 +1,16 @@
-<ul>
-  <li>🔬 <strong>Data Mining Researcher</strong>: high-utility itemset and pattern mining (<a href="https://orcid.org/0000-0002-2524-6416">ORCID</a>)</li>
-  <li>🕹️ <strong>Retro Games</strong> | 🖥️ <strong>Text-Mode and Terminal UIs</strong> | 💾 <strong>DOS</strong></li>
-  <li>🧰 <strong>Pascal | C | Swift | x86 Assembly</strong></li>
-  <li>🎨 Color quantization, dithering, ray casting, and a <a href="https://github.com/dzutrinh/EMUFAMI">NES emulator in Pascal</a></li>
-  <li>🍏 Small <strong>macOS utilities</strong> in Swift</li>
-</ul>
+<p align="center">
+  <img src="generated/banner.svg" alt="dzutrinh, in ASCII art, in a terminal. whoami: Data Mining Researcher (high-utility itemset and pattern mining). Retro games, text-mode and terminal UIs, DOS. Pascal, C, Swift, x86 Assembly. Color quantization, dithering, ray casting, a NES emulator in Pascal. Small macOS utilities in Swift." />
+</p>
 
-<div align="left">
-  <img src="generated/overview.svg" alt="GitHub overview: stars, forks, repositories and followers" />
-  <img src="generated/languages.svg" alt="Languages used across my repositories, by bytes of code" />
-</div>
+<p align="center">
+  <img src="generated/stats.svg" alt="GitHub numbers (stars, forks, repositories, followers, contributions) and the languages of my repositories by bytes of code, as bars in a terminal" />
+</p>
+
+<p align="center">
+  <a href="https://orcid.org/0000-0002-2524-6416">ORCID</a> ·
+  <a href="https://github.com/dzutrinh/EMUFAMI">EMUFAMI</a> ·
+  <a href="https://github.com/dzutrinh/TMGDL">TMGDL</a> ·
+  <a href="https://github.com/dzutrinh/2048">2048</a> ·
+  <a href="https://github.com/dzutrinh/Color-Reduction">Color-Reduction</a> ·
+  <a href="https://github.com/dzutrinh/Sort-CLI">Sort-CLI</a>
+</p>

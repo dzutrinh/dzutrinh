@@ -1,13 +1,16 @@
-"""Draws the two cards in the profile README from the GitHub API:
+"""Draws the two pictures in the profile README, as text in a terminal:
 
-    generated/overview.svg     stars, forks, repositories, followers, contributions
-    generated/languages.svg    languages by bytes of code, across my own repositories
+    generated/banner.svg    the name in ASCII art with colors going round, stars,
+                            a typed "whoami", and my repositories scrolling by
+    generated/stats.svg     numbers from the GitHub API, and languages by bytes of code
 
-    python3 stats.py           # .github/workflows/stats.yml runs this every week
+    python3 stats.py        # .github/workflows/stats.yml runs this every week
 
-Forks don't count. With GITHUB_TOKEN set (as it is in the workflow) it also
-shows the contributions of the last year; without it, 60 requests an hour are
-allowed, enough to run this once.
+Every piece of text sits on a grid of character cells, so it lines up in
+whichever monospace font the reader's computer has. Forks don't count. With
+GITHUB_TOKEN set (as it is in the workflow) the stats also show the
+contributions of the last year; without it, 60 requests an hour are allowed,
+enough to run this once.
 """
 
 import hashlib
@@ -15,6 +18,8 @@ import html
 import json
 import os
 import pathlib
+import random
+import re
 import urllib.request
 
 USER = os.environ.get("GITHUB_REPOSITORY_OWNER") or "dzutrinh"
@@ -22,33 +27,202 @@ TOKEN = os.environ.get("GITHUB_TOKEN")
 CACHE = os.environ.get("STATS_CACHE")  # a folder to keep API answers in, while working on the drawing
 OUT = pathlib.Path(__file__).parent / "generated"
 
-W, H, PAD = 400, 170, 20
-TOP = 7  # languages shown by name; the rest are "Other"
-FONT = "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif"
+# What "whoami" prints: a tag, then the line. Edit these and run the script.
+INFO = [
+    ("research", "Data Mining Researcher: high-utility itemset and pattern mining"),
+    ("play", "Retro Games | Text-Mode and Terminal UIs | DOS"),
+    ("code", "Pascal | C | Swift | x86 Assembly"),
+    ("pixels", "Color quantization, dithering, ray casting, a NES emulator in Pascal"),
+    ("mac", "Small macOS utilities in Swift"),
+]
 
-# Eight series colors that stay apart for color-blind readers, for a light and
-# a dark card. A language keeps the slot it first got (generated/languages.json).
-LIGHT = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948"]
-DARK = ["#3987e5", "#d95926", "#199e70", "#c98500", "#d55181", "#008300", "#9085e9", "#e66767"]
+# ------------------------------------------------------------------- the grid
+
+COLS = 90  # characters across
+CW, LH = 8.4, 19  # a cell, in pixels, for 14px text
+PAD, BAR = 22, 30  # space at the sides; the height of the title bar
+W = round(COLS * CW + 2 * PAD)
+FONT = "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', 'DejaVu Sans Mono', monospace"
+
+# Eight hues that stay apart for color-blind readers: darker for bars, lighter for text.
+MARK = ["#3987e5", "#d95926", "#199e70", "#c98500", "#d55181", "#008300", "#9085e9", "#e66767"]
+TEXT = ["#6eaaf2", "#f28c5e", "#3fd09c", "#eab63e", "#ef86ae", "#58c458", "#ada3f3", "#f28585"]
 
 STYLE = f"""
-text {{ font-family: {FONT}; }}
-.card {{ fill: #fcfcfb; stroke: #e3e2de; }}
-.title {{ font-size: 15px; font-weight: 600; fill: #0b0b0b; }}
-.label {{ font-size: 13px; fill: #52514e; }}
-.value {{ font-size: 13px; font-weight: 600; fill: #0b0b0b; }}
-.gap {{ fill: #fcfcfb; }}
-.other {{ fill: #a3a29b; }}
-{" ".join(f".s{i} {{ fill: {c}; }}" for i, c in enumerate(LIGHT))}
-@media (prefers-color-scheme: dark) {{
-.card {{ fill: #1a1a19; stroke: #383835; }}
-.title, .value {{ fill: #f0efec; }}
-.label {{ fill: #c3c2b7; }}
-.gap {{ fill: #1a1a19; }}
+text {{ font-family: {FONT}; font-size: 14px; fill: #f0efec; }}
+.screen {{ fill: #1a1a19; stroke: #383835; }}
+.bar {{ fill: #26262a; }}
+.dim {{ fill: #8a897f; }}
+.sec {{ fill: #c3c2b7; }}
+.b {{ font-weight: 700; }}
 .other {{ fill: #6f6e68; }}
-{" ".join(f".s{i} {{ fill: {c}; }}" for i, c in enumerate(DARK))}
+{" ".join(f".h{i} {{ fill: {c}; }}" for i, c in enumerate(TEXT))}
+{" ".join(f".s{i} {{ fill: {c}; }}" for i, c in enumerate(MARK))}
+.t {{ animation: on .01s linear backwards; }}
+.fade {{ animation: on .5s ease-out backwards; }}
+@keyframes on {{ from {{ opacity: 0; }} }}
+@keyframes off {{ to {{ opacity: 0; }} }}
+.cur {{ fill: #f0efec; animation: blink 1s steps(1) infinite; }}
+@keyframes blink {{ 50% {{ opacity: 0; }} }}
+.star {{ animation: twinkle 3.2s ease-in-out infinite; }}
+@keyframes twinkle {{ 0%, 100% {{ opacity: .12; }} 50% {{ opacity: .95; }} }}
+.logo g {{ animation: hue 8s linear infinite; }}
+.logo text {{ fill: inherit; }}
+@keyframes hue {{ {" ".join(f"{i * 12.5:g}% {{ fill: {c}; }}" for i, c in enumerate(TEXT + TEXT[:1]))} }}
+@media (prefers-reduced-motion: reduce) {{
+* {{ animation: none !important; }}
+.typing {{ display: none; }}
 }}
 """
+
+
+def x_of(col):
+    return PAD + col * CW
+
+
+def y_of(row):  # the baseline of a row
+    return BAR + 14 + row * LH + 14
+
+
+def text(col, row, s, cls="", delay=None, step=0.0, y=None):
+    """The words of s, each in its cells. With a delay they appear one after another."""
+    out, y = "", y_of(row) if y is None else y
+    for m in re.finditer(r"\S+", s):
+        word, style = m.group(), ""
+        if delay is not None:
+            style = f' style="animation-delay: {delay:.2f}s"'
+            delay += step
+        fit = f' textLength="{len(word) * CW:.1f}"' if len(word) > 1 else ""
+        out += f'<text x="{x_of(col + m.start()):.1f}" y="{y}" class="{cls}"{fit}{style}>{html.escape(word)}</text>'
+    return out + "\n"
+
+
+def cursor(col, row):
+    return f'<rect class="cur" x="{x_of(col):.1f}" y="{y_of(row) - 13}" width="{CW - 1}" height="16"/>'
+
+
+def screen(title, rows, body, label, css=""):
+    """A terminal window of this many rows of text."""
+    h = BAR + 14 + rows * LH + 14
+    return (
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{h}" viewBox="0 0 {W} {h}" role="img" '
+        f'aria-label="{html.escape(label, quote=True)}">\n<style>{STYLE}{css}</style>\n'
+        f'<defs><clipPath id="window"><rect x="0.5" y="0.5" width="{W - 1}" height="{h - 1}" rx="9"/></clipPath>'
+        f'<clipPath id="inside"><rect x="{PAD}" y="{BAR}" width="{W - 2 * PAD}" height="{h - BAR}"/></clipPath>'
+        f'<pattern id="scan" width="4" height="3" patternUnits="userSpaceOnUse"><rect width="4" height="1" fill="#000" opacity=".16"/></pattern>'
+        f'<filter id="glow" x="-5%" y="-40%" width="110%" height="180%"><feGaussianBlur stdDeviation="2" result="blur"/>'
+        f'<feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>\n'
+        f'<rect class="screen" x="0.5" y="0.5" width="{W - 1}" height="{h - 1}" rx="9"/>\n'
+        f'<g clip-path="url(#window)"><rect class="bar" width="{W}" height="{BAR}"/></g>\n'
+        + "".join(f'<circle cx="{20 + 18 * i}" cy="{BAR / 2}" r="5.5" fill="{c}"/>' for i, c in enumerate(["#e66767", "#c98500", "#199e70"]))
+        + f'\n<text class="dim" x="{W / 2}" y="{BAR / 2 + 5}" text-anchor="middle">{html.escape(title)}</text>\n'
+        f'{body}<rect x="0" y="{BAR}" width="{W}" height="{h - BAR}" fill="url(#scan)" clip-path="url(#window)"/>\n</svg>\n'
+    )
+
+
+# ----------------------------------------------------------------- the banner
+
+# The letters of the name, five dots by seven. Each dot is drawn as "##".
+LETTERS = {
+    "D": ["####.", "#...#", "#...#", "#...#", "#...#", "#...#", "####."],
+    "Z": ["#####", "....#", "...#.", "..#..", ".#...", "#....", "#####"],
+    "U": ["#...#", "#...#", "#...#", "#...#", "#...#", "#...#", ".###."],
+    "T": ["#####", "..#..", "..#..", "..#..", "..#..", "..#..", "..#.."],
+    "R": ["####.", "#...#", "#...#", "####.", "#.#..", "#..#.", "#...#"],
+    "I": ["#####", "..#..", "..#..", "..#..", "..#..", "..#..", "#####"],
+    "N": ["#...#", "##..#", "#.#.#", "#..##", "#...#", "#...#", "#...#"],
+    "H": ["#...#", "#...#", "#...#", "#####", "#...#", "#...#", "#...#"],
+}
+PITCH = 16  # pixels from one row of dots to the next: about as tall as "##" is wide
+
+
+def banner(name, repos):
+    word = [LETTERS[c] for c in name.upper() if c in LETTERS]
+    body, col = '<g class="logo" filter="url(#glow)">\n', (COLS - 11 * len(word) + 1) // 2
+    for i, letter in enumerate(word):  # each letter a step further round the colors: a wave
+        body += f'<g style="animation-delay: {-i:g}s">'
+        for j, dots in enumerate(letter):
+            body += text(col, 1, "".join("##" if d == "#" else "  " for d in dots), y=y_of(1) + j * PITCH)
+        body += "</g>\n"
+        col += 11
+    body += "</g>\n"
+
+    rng = random.Random(1986)  # the same sky every time
+    taken = set()
+    for _ in range(40):
+        c, r = rng.randrange(COLS), rng.choice([0, 7])
+        if (c, r) not in taken:
+            taken |= {(c - 1, r), (c, r), (c + 1, r)}
+            body += (
+                f'<text class="star h{rng.choice([0, 0, 3, 4, 6])}" x="{x_of(c):.1f}" y="{y_of(r)}" '
+                f'style="animation-delay: {-rng.uniform(0, 3.2):.2f}s">{rng.choice(".+*.\'")}</text>\n'
+            )
+
+    # C:\> whoami, typed, and what it prints, a word at a time.
+    row, t, command = 8, 0.9, "whoami"
+    body += text(0, row, "C:\\>", "h2 b")
+    for i, ch in enumerate(command):
+        body += text(5 + i, row, ch, "t", t + 0.11 * i)
+    typed = t + 0.11 * len(command)
+    body += (
+        f'<g class="typing" style="animation: off .01s linear {typed + 0.45:.2f}s forwards">'
+        f'<g style="animation: type {typed - t:.2f}s steps({len(command)}) {t:.2f}s forwards">{cursor(5, row)}</g></g>\n'
+    )
+    t = typed + 0.55
+    for i, (tag, line) in enumerate(INFO):
+        row += 1
+        body += text(2, row, f"[{tag}]", f"t b h{(i * 3 + 1) % 8}", t)
+        t += 0.05
+        for m in re.finditer(r"\S+", line):
+            body += text(14 + m.start(), row, m.group(), "t dim" if m.group() == "|" else "t", t)
+            t += 0.035
+        t += 0.1
+    row += 1
+    body += f'<g class="t" style="animation-delay: {t + 0.2:.2f}s">' + text(0, row, "C:\\>", "h2 b") + cursor(5, row) + "</g>\n"
+
+    # The repositories with the most stars, going by along the bottom.
+    row += 2
+    tape = " +++ ".join(f"{r['name']} *{r['stargazers_count']}" for r in repos[:10]) + " +++ "
+    body += '<g clip-path="url(#inside)"><g style="animation: tape %ds linear infinite">\n' % round(len(tape) / 3.2)
+    for k in range(-(-COLS // len(tape)) + 1):
+        for m in re.finditer(r"\S+", tape):
+            cls = "dim" if m.group() == "+++" else "h3 b" if m.group().startswith("*") else "sec"
+            body += text(k * len(tape) + m.start(), row, m.group(), cls)
+    body += "</g></g>\n"
+
+    css = (
+        f"@keyframes type {{ to {{ transform: translateX({len(command) * CW:.1f}px); }} }}\n"
+        f"@keyframes tape {{ to {{ transform: translateX({-len(tape) * CW:.1f}px); }} }}\n"
+    )
+    label = f"{name}. " + ". ".join(line for _, line in INFO) + "."
+    return screen(f"{name} : README.EXE", row + 1, body, label, css)
+
+
+# ------------------------------------------------------------------ the stats
+
+
+def stats(name, rows, shares, slots):
+    """rows: (label, number). shares: (language, fraction) from the largest, "Other" last."""
+    body = text(0, 0, "C:\\>", "h2 b") + text(5, 0, "stats")
+    body += text(2, 2, "-- overview --", "h0 b") + text(44, 2, "-- languages, by bytes of code --", "h0 b")
+    for i, (label, value) in enumerate(rows):  # a label, dots, and its number at the right
+        number = f"{value:,}"
+        dots = "." * (38 - len(label) - len(number) - 2)
+        body += f'<g class="fade" style="animation-delay: {0.15 * i:.2f}s">'
+        body += text(2, 3 + i, label, "sec") + text(2 + len(label) + 1, 3 + i, dots, "dim")
+        body += text(40 - len(number), 3 + i, number, "b") + "</g>\n"
+    longest = max(share for _, share in shares)
+    for i, (lang, share) in enumerate(shares):  # a bar of #, to the scale of the longest
+        n = max(1, round(share / longest * 24))
+        percent = f"{share:.1%}" if share >= 0.001 else "<0.1%"
+        body += f'<g class="fade" style="animation-delay: {0.1 * i:.2f}s">'
+        body += text(44, 3 + i, lang[:12], "sec") + text(57, 3 + i, "#" * n, slots[lang])
+        body += text(57 + n, 3 + i, "." * (24 - n), "dim") + text(88 - len(percent), 3 + i, percent, "b") + "</g>\n"
+    label = "; ".join(f"{label}: {value:,}" for label, value in rows) + ". Languages: " + "; ".join(f"{lang} {share:.1%}" for lang, share in shares)
+    return screen(f"{name} : STATS.EXE", 3 + max(len(rows), len(shares)), body, label)
+
+
+# ------------------------------------------------------------------- the data
 
 
 def api(path, query=None):
@@ -69,45 +243,6 @@ def api(path, query=None):
     return answer
 
 
-def card(title, body, label):
-    return (
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" '
-        f'aria-label="{html.escape(label, quote=True)}">\n<style>{STYLE}</style>\n'
-        f'<rect class="card" x="0.5" y="0.5" width="{W - 1}" height="{H - 1}" rx="8"/>\n'
-        f'<text class="title" x="{PAD}" y="33">{html.escape(title)}</text>\n{body}</svg>\n'
-    )
-
-
-def overview(name, rows):
-    body = ""
-    for i, (label, value) in enumerate(rows):
-        y = 62 + i * 23
-        body += f'<text class="label" x="{PAD}" y="{y}">{label}</text>'
-        body += f'<text class="value" x="{W - PAD}" y="{y}" text-anchor="end">{value:,}</text>\n'
-    return card(f"{name}'s GitHub", body, "; ".join(f"{label}: {value:,}" for label, value in rows))
-
-
-def languages(shares, slots):
-    """shares: (language, fraction) from the largest, "Other" last."""
-    width, x, body = W - 2 * PAD, 0.0, '<clipPath id="bar"><rect x="%d" y="50" width="%d" height="10" rx="4"/></clipPath>\n' % (PAD, W - 2 * PAD)
-    body += '<g clip-path="url(#bar)">\n'
-    for i, (lang, share) in enumerate(shares):
-        w = share * width
-        body += f'<rect class="{slots[lang]}" x="{PAD + x:.1f}" y="50" width="{w:.1f}" height="10"/>'
-        if i:  # two pixels of the card between neighbors
-            body += f'<rect class="gap" x="{PAD + x - 1:.1f}" y="50" width="2" height="10"/>'
-        body += "\n"
-        x += w
-    body += "</g>\n"
-    for i, (lang, share) in enumerate(shares):  # the legend: two columns, each name with its share
-        lx, ly = PAD + (i % 2) * (width / 2 + 6), 86 + (i // 2) * 21
-        percent = f"{share:.1%}" if share >= 0.001 else "&lt;0.1%"
-        body += f'<rect class="{slots[lang]}" x="{lx:.0f}" y="{ly - 10}" width="10" height="10" rx="2"/>'
-        body += f'<text class="label" x="{lx + 17:.0f}" y="{ly}">{html.escape(lang)}</text>'
-        body += f'<text class="value" x="{lx + width / 2 - 14:.0f}" y="{ly}" text-anchor="end">{percent}</text>\n'
-    return card("Languages, by bytes of code", body, "; ".join(f"{lang}: {share:.1%}" for lang, share in shares))
-
-
 def main():
     user = api(f"users/{USER}")
     repos, page = [], 1
@@ -117,6 +252,7 @@ def main():
         if len(batch) < 100:
             break
         page += 1
+    repos.sort(key=lambda r: (-r["stargazers_count"], r["name"].lower()))
 
     rows = [
         ("Stars earned", sum(r["stargazers_count"] for r in repos)),
@@ -129,7 +265,7 @@ def main():
             q = '{ user(login: "%s") { contributionsCollection { contributionCalendar { totalContributions } } } }' % USER
             total = api("graphql", q)["data"]["user"]["contributionsCollection"]["contributionCalendar"]["totalContributions"]
             rows.append(("Contributions in the last year", total))
-        except Exception as e:  # the card is still worth drawing without it
+        except Exception as e:  # the picture is still worth drawing without it
             print("no contributions:", e)
 
     size = {}
@@ -140,13 +276,13 @@ def main():
     ranked = sorted(size.items(), key=lambda kv: -kv[1])
 
     OUT.mkdir(exist_ok=True)
-    memory = OUT / "languages.json"  # which slot each language has, so its color doesn't change from week to week
+    memory = OUT / "languages.json"  # which color each language has, so it doesn't change from week to week
     slots = json.loads(memory.read_text()) if memory.exists() else {}
     slots = {lang: s for lang, s in slots.items() if lang in size}
     shown = []
     for lang, n in ranked:
-        free = [f"s{i}" for i in range(len(LIGHT)) if f"s{i}" not in slots.values()]
-        if len(shown) < TOP and n / total >= 0.005 and (lang in slots or free):
+        free = [f"s{i}" for i in range(len(MARK)) if f"s{i}" not in slots.values()]
+        if len(shown) < 7 and n / total >= 0.005 and (lang in slots or free):
             slots.setdefault(lang, free[0] if free else None)
             shown.append((lang, n / total))
     slots = {lang: slots[lang] for lang, _ in shown}
@@ -155,12 +291,13 @@ def main():
         shown.append(("Other", rest))
 
     memory.write_text(json.dumps(slots, indent=1) + "\n")
-    (OUT / "overview.svg").write_text(overview(user.get("name") or USER, rows), encoding="utf-8")
-    (OUT / "languages.svg").write_text(languages(shown, {**slots, "Other": "other"}), encoding="utf-8")
+    (OUT / "banner.svg").write_text(banner(USER, [r for r in repos if r["stargazers_count"]]), encoding="utf-8")
+    (OUT / "stats.svg").write_text(stats(USER, rows, shown, {**slots, "Other": "other"}), encoding="utf-8")
     for label, value in rows:
         print(f"{value:>8,}  {label}")
     for lang, share in shown:
         print(f"{share:>8.1%}  {lang}")
 
 
-main()
+if __name__ == "__main__":
+    main()
