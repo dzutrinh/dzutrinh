@@ -1,0 +1,9 @@
+{
+ "Pascal": "s0",
+ "C": "s1",
+ "Swift": "s2",
+ "HTML": "s3",
+ "C++": "s4",
+ "JavaScript": "s5",
+ "Assembly": "s6"
+}
