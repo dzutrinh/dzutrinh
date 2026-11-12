@@ -1,6 +1,6 @@
 """Draws the two pictures in the profile README, as text in a terminal:
 
-    generated/banner.svg    the name in ASCII art with colors going round, stars,
+    generated/banner.svg    my name in ASCII art with colors going round, stars,
                             a typed "whoami", and my repositories scrolling by
     generated/stats.svg     numbers from the GitHub API, and languages by bytes of code
 
@@ -122,30 +122,66 @@ def screen(title, rows, body, label, css=""):
 
 # ----------------------------------------------------------------- the banner
 
-# The letters of the name, five dots by seven. Each dot is drawn as "##".
+# Capital letters, five dots by seven.
 LETTERS = {
+    "A": [".###.", "#...#", "#...#", "#####", "#...#", "#...#", "#...#"],
+    "B": ["####.", "#...#", "#...#", "####.", "#...#", "#...#", "####."],
+    "C": [".####", "#....", "#....", "#....", "#....", "#....", ".####"],
     "D": ["####.", "#...#", "#...#", "#...#", "#...#", "#...#", "####."],
-    "Z": ["#####", "....#", "...#.", "..#..", ".#...", "#....", "#####"],
-    "U": ["#...#", "#...#", "#...#", "#...#", "#...#", "#...#", ".###."],
-    "T": ["#####", "..#..", "..#..", "..#..", "..#..", "..#..", "..#.."],
-    "R": ["####.", "#...#", "#...#", "####.", "#.#..", "#..#.", "#...#"],
-    "I": ["#####", "..#..", "..#..", "..#..", "..#..", "..#..", "#####"],
-    "N": ["#...#", "##..#", "#.#.#", "#..##", "#...#", "#...#", "#...#"],
+    "E": ["#####", "#....", "#....", "####.", "#....", "#....", "#####"],
+    "F": ["#####", "#....", "#....", "####.", "#....", "#....", "#...."],
+    "G": [".####", "#....", "#....", "#.###", "#...#", "#...#", ".####"],
     "H": ["#...#", "#...#", "#...#", "#####", "#...#", "#...#", "#...#"],
+    "I": ["#####", "..#..", "..#..", "..#..", "..#..", "..#..", "#####"],
+    "J": ["..###", "...#.", "...#.", "...#.", "...#.", "#..#.", ".##.."],
+    "K": ["#...#", "#..#.", "#.#..", "##...", "#.#..", "#..#.", "#...#"],
+    "L": ["#....", "#....", "#....", "#....", "#....", "#....", "#####"],
+    "M": ["#...#", "##.##", "#.#.#", "#.#.#", "#...#", "#...#", "#...#"],
+    "N": ["#...#", "##..#", "#.#.#", "#..##", "#...#", "#...#", "#...#"],
+    "O": [".###.", "#...#", "#...#", "#...#", "#...#", "#...#", ".###."],
+    "P": ["####.", "#...#", "#...#", "####.", "#....", "#....", "#...."],
+    "Q": [".###.", "#...#", "#...#", "#...#", "#.#.#", "#..#.", ".##.#"],
+    "R": ["####.", "#...#", "#...#", "####.", "#.#..", "#..#.", "#...#"],
+    "S": [".####", "#....", "#....", ".###.", "....#", "....#", "####."],
+    "T": ["#####", "..#..", "..#..", "..#..", "..#..", "..#..", "..#.."],
+    "U": ["#...#", "#...#", "#...#", "#...#", "#...#", "#...#", ".###."],
+    "V": ["#...#", "#...#", "#...#", "#...#", "#...#", ".#.#.", "..#.."],
+    "W": ["#...#", "#...#", "#...#", "#.#.#", "#.#.#", "##.##", "#...#"],
+    "X": ["#...#", "#...#", ".#.#.", "..#..", ".#.#.", "#...#", "#...#"],
+    "Y": ["#...#", "#...#", ".#.#.", "..#..", "..#..", "..#..", "..#.."],
+    "Z": ["#####", "....#", "...#.", "..#..", ".#...", "#....", "#####"],
 }
-PITCH = 16  # pixels from one row of dots to the next: about as tall as "##" is wide
+
+
+def logo(name):
+    """The name in letters made of "#", as big as fits in rows 1 to 6. A dot of
+    a letter is "##" when the name is short enough for that, "#" when it's long."""
+    chars = [c for c in name.upper() if c in LETTERS or c == " "]
+    dots = sum(3 if c == " " else 6 for c in chars) - 1  # across, with one between letters
+    k = 2 if 2 * dots <= COLS else 1  # characters to a dot
+    pitch = 16 if k == 2 else 10  # pixels from one row of dots to the next: about what a dot is wide
+    wide, tall = k * dots * CW, 6 * pitch + 11
+    scale = min(COLS * CW / wide, 6 * LH / tall)
+    x0, y0 = PAD + (COLS * CW - wide * scale) / 2, y_of(1) - 13 + (6 * LH - tall * scale) / 2
+    out = f'<g class="logo" filter="url(#glow)" transform="translate({x0:.1f} {y0:.1f}) scale({scale:.3f})">'
+    dot = n = 0
+    for c in chars:
+        if c == " ":
+            dot += 3
+            continue
+        out += f'\n<g style="animation-delay: {-n:g}s">'  # each letter a step further round the colors: a wave
+        for j, line in enumerate(LETTERS[c]):
+            for m in re.finditer("#+", line):
+                size = k * len(m.group())
+                fit = f' textLength="{size * CW:.1f}"' if size > 1 else ""
+                out += f'<text x="{k * (dot + m.start()) * CW:.1f}" y="{11 + j * pitch}"{fit}>{"#" * size}</text>'
+        out += "</g>"
+        dot, n = dot + 6, n + 1
+    return out + "\n</g>\n"
 
 
 def banner(name, repos):
-    word = [LETTERS[c] for c in name.upper() if c in LETTERS]
-    body, col = '<g class="logo" filter="url(#glow)">\n', (COLS - 11 * len(word) + 1) // 2
-    for i, letter in enumerate(word):  # each letter a step further round the colors: a wave
-        body += f'<g style="animation-delay: {-i:g}s">'
-        for j, dots in enumerate(letter):
-            body += text(col, 1, "".join("##" if d == "#" else "  " for d in dots), y=y_of(1) + j * PITCH)
-        body += "</g>\n"
-        col += 11
-    body += "</g>\n"
+    body = logo(name)
 
     rng = random.Random(1986)  # the same sky every time
     taken = set()
@@ -195,7 +231,7 @@ def banner(name, repos):
         f"@keyframes tape {{ to {{ transform: translateX({-len(tape) * CW:.1f}px); }} }}\n"
     )
     label = f"{name}. " + ". ".join(line for _, line in INFO) + "."
-    return screen(f"{name} : README.EXE", row + 1, body, label, css)
+    return screen(f"{USER} : README.EXE", row + 1, body, label, css)
 
 
 # ------------------------------------------------------------------ the stats
@@ -291,7 +327,7 @@ def main():
         shown.append(("Other", rest))
 
     memory.write_text(json.dumps(slots, indent=1) + "\n")
-    (OUT / "banner.svg").write_text(banner(USER, [r for r in repos if r["stargazers_count"]]), encoding="utf-8")
+    (OUT / "banner.svg").write_text(banner(user.get("name") or USER, [r for r in repos if r["stargazers_count"]]), encoding="utf-8")
     (OUT / "stats.svg").write_text(stats(USER, rows, shown, {**slots, "Other": "other"}), encoding="utf-8")
     for label, value in rows:
         print(f"{value:>8,}  {label}")
