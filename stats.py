@@ -68,6 +68,8 @@ text {{ font-family: {FONT}; font-size: 14px; fill: #f0efec; }}
 @keyframes twinkle {{ 0%, 100% {{ opacity: .12; }} 50% {{ opacity: .95; }} }}
 .logo g {{ animation: hue 8s linear infinite; }}
 .logo text {{ fill: inherit; }}
+.logo .g2 {{ opacity: .67; }}
+.logo .g1 {{ opacity: .4; }}
 @keyframes hue {{ {" ".join(f"{i * 12.5:g}% {{ fill: {c}; }}" for i, c in enumerate(TEXT + TEXT[:1]))} }}
 @media (prefers-reduced-motion: reduce) {{
 * {{ animation: none !important; }}
@@ -122,61 +124,247 @@ def screen(title, rows, body, label, css=""):
 
 # ----------------------------------------------------------------- the banner
 
-# Capital letters, five dots by seven.
-LETTERS = {
-    "A": [".###.", "#...#", "#...#", "#####", "#...#", "#...#", "#...#"],
-    "B": ["####.", "#...#", "#...#", "####.", "#...#", "#...#", "####."],
-    "C": [".####", "#....", "#....", "#....", "#....", "#....", ".####"],
-    "D": ["####.", "#...#", "#...#", "#...#", "#...#", "#...#", "####."],
-    "E": ["#####", "#....", "#....", "####.", "#....", "#....", "#####"],
-    "F": ["#####", "#....", "#....", "####.", "#....", "#....", "#...."],
-    "G": [".####", "#....", "#....", "#.###", "#...#", "#...#", ".####"],
-    "H": ["#...#", "#...#", "#...#", "#####", "#...#", "#...#", "#...#"],
-    "I": ["#####", "..#..", "..#..", "..#..", "..#..", "..#..", "#####"],
-    "J": ["..###", "...#.", "...#.", "...#.", "...#.", "#..#.", ".##.."],
-    "K": ["#...#", "#..#.", "#.#..", "##...", "#.#..", "#..#.", "#...#"],
-    "L": ["#....", "#....", "#....", "#....", "#....", "#....", "#####"],
-    "M": ["#...#", "##.##", "#.#.#", "#.#.#", "#...#", "#...#", "#...#"],
-    "N": ["#...#", "##..#", "#.#.#", "#..##", "#...#", "#...#", "#...#"],
-    "O": [".###.", "#...#", "#...#", "#...#", "#...#", "#...#", ".###."],
-    "P": ["####.", "#...#", "#...#", "####.", "#....", "#....", "#...."],
-    "Q": [".###.", "#...#", "#...#", "#...#", "#.#.#", "#..#.", ".##.#"],
-    "R": ["####.", "#...#", "#...#", "####.", "#.#..", "#..#.", "#...#"],
-    "S": [".####", "#....", "#....", ".###.", "....#", "....#", "####."],
-    "T": ["#####", "..#..", "..#..", "..#..", "..#..", "..#..", "..#.."],
-    "U": ["#...#", "#...#", "#...#", "#...#", "#...#", "#...#", ".###."],
-    "V": ["#...#", "#...#", "#...#", "#...#", "#...#", ".#.#.", "..#.."],
-    "W": ["#...#", "#...#", "#...#", "#.#.#", "#.#.#", "##.##", "#...#"],
-    "X": ["#...#", "#...#", ".#.#.", "..#..", ".#.#.", "#...#", "#...#"],
-    "Y": ["#...#", "#...#", ".#.#.", "..#..", "..#..", "..#..", "..#.."],
-    "Z": ["#####", "....#", "...#.", "..#..", ".#...", "#....", "#####"],
-}
+# Capital letters in the TheDraw font "cFh hOEr", done by pC wIZARd, the way
+# patorjk.com/software/taag draws them. After the last "|" of a row comes how
+# bright each of its characters is: 3 is white, 2 light grey, 1 dark grey.
+CFH_HOER = r"""
+A
+.______  |3322111
+:      \ |3      1
+|   .   ||2   1   1
+|   :   ||1   2   1
+|___|   ||11223   2
+    |___||    21233
+B
+._______ |33221111
+: __   / |3 11   1
+|  |>  \ |2  11  1
+|  |>   \|1  22   2
+|_______/|221112233
+C
+._______ |33221111
+:_.  ___\|322  1111
+|  : |/\ |2  1 111
+|    /  \|1    1  2
+|. _____/|22 111233
+ :/      | 21
+ :       | 2
+D
+.______  |3322111
+:_ _   \ |32 1   1
+|   |   ||2   1   1
+| . |   ||2 1 1   2
+|. ____/ |33 11233
+ :/      | 22
+ :       | 2
+E
+._______|33221111
+: .____/|3 111122
+| : _/\ |2 1 111
+|   /  \|1   1  2
+|_.: __/|2211 233
+   :/   |   12
+F
+._______|33221111
+:_ ____/|32 11111
+|   _/  |2   11
+|   |   |1   2
+|_. |   |111 3
+  :/    |  23
+  :     |  2
+G
+._____  |332211
+:_ ___\ |32 1111
+|   |___|2   1111
+|   /  ||1   1  1
+|. __  ||22 21  2
+ :/ |. || 22 12 3
+ :   :/ | 3   23
+     :  |     2
+H
+.___.__  |3322112
+:   |  \ |3   1  3
+|   :   ||2   1   2
+|   .   ||2   1   1
+|___|   ||33221   2
+    |___||    22233
+I
+.___ |3321
+: __||2 111
+| : ||1 2 1
+|   ||1   1
+|   ||1   2
+|___||11233
+J
+.________ |332211111
+:____.   \|321111   2
+ __|  :/ || 111  12 3
+|     :  ||1     2  2
+ \__. __/ | 1233 111
+    :/    |    22
+    :     |    2
+K
+.____/\ |2211233
+:   /  \|2   2  2
+|.  ___/|11  2111
+|     \ |1     1
+|      \|2      1
+|___\  /|33212  2
+     \/ |     33
+L
+.___    |3322
+|   |   |3   1
+|   |   |2   1
+|   |/\ |1   233
+|   /  \|1   2  2
+|______/|11111233
+M
+._____.___ |3321112111
+:         ||3         1
+|   \  /  ||2   2  2  1
+|   |\/   ||1   233   1
+|___| |   ||11111 2   2
+      |___||      11233
+N
+.______  |3322112
+:      \ |3      3
+|       ||2       2
+|   |   ||2   1   1
+|___|   ||33221   2
+    |___||    22233
+O
+._______  |33211111
+: .___  \ |3 1112  1
+| :   |  ||2 1   2  1
+|     :  ||1     1  2
+ \_. ___/ | 123 1233
+   :/     |   22
+   :      |   2
+P
+._______ |33221111
+: ____  ||3 1112  1
+|    :  ||2    2  2
+|   |___||1   22233
+|___|    |11233
+Q
+._______  |33211111
+: .___  \ |3 1112  1
+| :   |  ||2 1   2  1
+|     :  ||1     1  2
+ \_____. :| 1111123 3
+       :/ |       23
+       :  |       2
+R
+.______  |3322111
+: __   \ |3 11   2
+|  \____||2  111111
+|   :  \ |1   1  2
+|   |___\|2   11233
+|___|    |33221
+S
+.________|332211111
+|    ___/|3    1111
+|___    \|2211    1
+|       /|1       2
+|__:___/ |11121233
+   :     |   2
+T
+_____._|3221122
+\__ _:||332 121
+  |  :||  2  11
+  |   ||  1   1
+  |   ||  1   2
+  |___||  11233
+U
+.____     |33221
+|    |___ |3    1111
+|    |   ||2    1   1
+|    :   ||1    1   1
+|        ||2        2
+|. _____/ |33 211233
+ :/       | 22
+ :        | 1
+V
+.___     |3321
+|   |___ |3   1211
+|   |   ||2   2   1
+|   :   ||1   3   1
+ \      || 1      2
+  \____/ |  111123
+W
+         ___ |         123
+.___    |   ||3321    1   3
+:   | /\|   ||3   1 121   2
+|   |/  :   ||2   11  2   1
+|   /       ||2   1       2
+|______/|___||3322111111233
+        :    |        2
+        :    |        2
+X
+.___.__  |3322111
+|   |  \ |3   1  1
+ \_   _/ | 21   11
+ /  |  \ | 1  1  3
+|   |___||1   11233
+|___|    |21231
+Y
+____   ____|3221   1123
+\   \_/   /|3   111   3
+ \___ ___/ | 2111 1112
+   |   |   |   1   2
+   |___|   |   11233
+Z
+.______ |3221123
+\____  ||32111  3
+/  ____||2  11112
+\      ||1      2
+ \__:__|| 1112233
+    :   |    2
+    ∙   |    2
+"""
+
+
+def letters(font):
+    """{letter: its rows, each (the characters, their brightness)}"""
+    out = {}
+    for line in font.strip("\n").split("\n"):
+        art, bar, shades = line.rpartition("|")
+        if bar:
+            out[letter].append((art, shades.ljust(len(art))))
+        else:
+            letter = line
+            out[letter] = []
+    return out
+
+
+LETTERS = letters(CFH_HOER)
+SPACE = 4  # columns between two words
+PITCH = 17  # pixels from one row of a letter to the next: close enough for one "|" to meet the next
 
 
 def logo(name):
-    """The name in letters made of "#", as big as fits in rows 1 to 6. A dot of
-    a letter is "##" when the name is short enough for that, "#" when it's long."""
+    """The name in these letters, as big as fits in rows 1 to 6. Each letter is a
+    step further round the colors, and the greys of the font are how strong its color is."""
     chars = [c for c in name.upper() if c in LETTERS or c == " "]
-    dots = sum(3 if c == " " else 6 for c in chars) - 1  # across, with one between letters
-    k = 2 if 2 * dots <= COLS else 1  # characters to a dot
-    pitch = 16 if k == 2 else 10  # pixels from one row of dots to the next: about what a dot is wide
-    wide, tall = k * dots * CW, 6 * pitch + 11
+    cols = sum(SPACE if c == " " else len(LETTERS[c][0][0]) for c in chars)
+    rows = max((len(LETTERS[c]) for c in chars if c != " "), default=1)
+    wide, tall = max(cols, 1) * CW, (rows - 1) * PITCH + 14
     scale = min(COLS * CW / wide, 6 * LH / tall)
     x0, y0 = PAD + (COLS * CW - wide * scale) / 2, y_of(1) - 13 + (6 * LH - tall * scale) / 2
     out = f'<g class="logo" filter="url(#glow)" transform="translate({x0:.1f} {y0:.1f}) scale({scale:.3f})">'
-    dot = n = 0
+    col = n = 0
     for c in chars:
         if c == " ":
-            dot += 3
+            col += SPACE
             continue
         out += f'\n<g style="animation-delay: {-n:g}s">'  # each letter a step further round the colors: a wave
-        for j, line in enumerate(LETTERS[c]):
-            for m in re.finditer("#+", line):
-                size = k * len(m.group())
-                fit = f' textLength="{size * CW:.1f}"' if size > 1 else ""
-                out += f'<text x="{k * (dot + m.start()) * CW:.1f}" y="{11 + j * pitch}"{fit}>{"#" * size}</text>'
+        for j, (art, shades) in enumerate(LETTERS[c]):
+            for m in re.finditer(r"([123])\1*", shades):  # the characters next to each other of one brightness
+                run = art[m.start() : m.end()]
+                fit = f' textLength="{len(run) * CW:.1f}"' if len(run) > 1 else ""
+                out += f'<text class="g{m.group(1)}" x="{(col + m.start()) * CW:.1f}" y="{11 + j * PITCH}"{fit}>{html.escape(run)}</text>'
         out += "</g>"
-        dot, n = dot + 6, n + 1
+        col, n = col + len(LETTERS[c][0][0]), n + 1
     return out + "\n</g>\n"
 
 
