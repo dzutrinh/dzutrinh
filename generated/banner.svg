@@ -139,7 +139,7 @@ text { font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'L
 <text x="64.0" y="362" class="h3 b" textLength="25.2">*22</text>
 <text x="97.6" y="362" class="dim" textLength="25.2">+++</text>
 <text x="131.2" y="362" class="sec" textLength="42.0">TMGDL</text>
-<text x="181.6" y="362" class="h3 b" textLength="25.2">*17</text>
+<text x="181.6" y="362" class="h3 b" textLength="25.2">*18</text>
 <text x="215.2" y="362" class="dim" textLength="25.2">+++</text>
 <text x="248.8" y="362" class="sec" textLength="126.0">Color-Reduction</text>
 <text x="383.2" y="362" class="h3 b" textLength="25.2">*12</text>
@@ -169,7 +169,7 @@ text { font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'L
 <text x="1794.4" y="362" class="h3 b" textLength="25.2">*22</text>
 <text x="1828.0" y="362" class="dim" textLength="25.2">+++</text>
 <text x="1861.6" y="362" class="sec" textLength="42.0">TMGDL</text>
-<text x="1912.0" y="362" class="h3 b" textLength="25.2">*17</text>
+<text x="1912.0" y="362" class="h3 b" textLength="25.2">*18</text>
 <text x="1945.6" y="362" class="dim" textLength="25.2">+++</text>
 <text x="1979.2" y="362" class="sec" textLength="126.0">Color-Reduction</text>
 <text x="2113.6" y="362" class="h3 b" textLength="25.2">*12</text>
